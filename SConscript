@@ -1,9 +1,21 @@
 Import('env')
 
+import zipfile
+import os.path
+import os
+
 localEnv = env.Clone()
 
-def unzip(filename):
-    print filename
+# unzip a file
+def unzip(path,outdir):
+    zfile = zipfile.ZipFile(path)
+    for name in zfile.namelist():
+        (dirname, filename) = os.path.split(name)
+        print "unzip "+filename+" on "+dirname
+        if not os.path.exists(outdir+dirname):
+            os.makedirs(outdir+dirname)
+        zfile.extract(name,outdir+dirname)
+    zfile.close()
 
 build = localEnv.Command(
     'dummy.out',
@@ -12,7 +24,7 @@ build = localEnv.Command(
         # copy NOOBS to current directory
         Copy( Dir('#'), localEnv['OW_PATH_NOOBS_IN'] ),
         # unzip NOOBS
-        unzip('poipoi2'),
+        unzip("NOOBS_v1_3_10.zip","OpenPi/"),
         # delete OSes
         # TODO
         # rename Raspbian
