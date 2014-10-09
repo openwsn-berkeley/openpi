@@ -1,6 +1,6 @@
 import os
 import sys
-import platform
+
 import SCons
 
 #============================ banner ==========================================
@@ -33,6 +33,12 @@ env = Environment(
 
 def default(env,target,source): print SCons.Script.help_text
 Default(env.Command('default', None, default))
+
+#============================ environment variables ===========================
+
+for (k,v) in os.environ.items():
+    if k.startswith('OW_'):
+        env[k] = v
 
 #============================ load SConscript(s) ==============================
 

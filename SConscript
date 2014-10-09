@@ -1,48 +1,34 @@
 Import('env')
 
-def download_noobs(env,target,source):
-    print 'TODO'
+localEnv = env.Clone()
 
-def copy_noobs(env,target,source):
-    print 'TODO'
+def unzip(filename):
+    print filename
 
-def unzip_noobs(env,target,source):
-    print 'TODO'
-
-def delete_OSs(env,target,source):
-    print 'TODO'
-
-def rename_Raspbian(env,target,source):
-    print 'TODO'
-
-def customize_marketing(env,target,source):
-    print 'TODO'
-
-def inflate_root(env,target,source):
-    print 'TODO'
-
-def customize_root(env,target,source):
-    print 'TODO'
-
-def compress_root(env,target,source):
-    print 'TODO'
-
-def zip_noobs(env,target,source):
-    print 'TODO'
-
-build = env.Command(
+build = localEnv.Command(
     'dummy.out',
     [],
     [
-        download_noobs,
-        unzip_noobs,
-        delete_OSs,
-        rename_Raspbian,
-        customize_marketing,
-        inflate_root,
-        customize_root,
-        compress_root,
-        zip_noobs,
+        # copy NOOBS to current directory
+        Copy( Dir('#'), localEnv['OW_PATH_NOOBS_IN'] ),
+        # unzip NOOBS
+        unzip('poipoi2'),
+        # delete OSes
+        # TODO
+        # rename Raspbian
+        # TODO
+        # customize marketing
+        # TODO
+        # inflate root,
+        # TODO
+        # customize root,
+        # TODO
+        # compress root,
+        # TODO
+        # zip noobs,
+        # TODO
+        # copy to final location
+        # TODO
     ]
 )
-env.Alias('build', build)
+localEnv.Alias('build', build)
