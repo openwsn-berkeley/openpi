@@ -1,0 +1,1 @@
+This directory contains elements to be installed in the OpenPi distribution.
