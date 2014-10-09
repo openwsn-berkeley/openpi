@@ -7,15 +7,18 @@ import os
 localEnv = env.Clone()
 
 # unzip a file
-def unzip(path,outdir):
+def unzip(path):
     zfile = zipfile.ZipFile(path)
-    for name in zfile.namelist():
-        (dirname, filename) = os.path.split(name)
-        print "unzip "+filename+" on "+dirname
-        if not os.path.exists(outdir+dirname):
-            os.makedirs(outdir+dirname)
-        zfile.extract(name,outdir+dirname)
+    zfile.extractall(os.getcwd())
     zfile.close()
+
+# delete OSes but Raspbian
+def deleteOSes(path):
+    rmPath = os.listdit(path+"os")
+    for direcotry in rmPath:
+        if not directory == "Raspbian/" or not directory == "Data_Partition/":
+            shutil.rmtree(directory)
+
 
 build = localEnv.Command(
     'dummy.out',
@@ -24,9 +27,9 @@ build = localEnv.Command(
         # copy NOOBS to current directory
         Copy( Dir('#'), localEnv['OW_PATH_NOOBS_IN'] ),
         # unzip NOOBS
-        unzip("NOOBS_v1_3_10.zip","OpenPi/"),
+        unzip("NOOBS_v1_3_10.zip"),
         # delete OSes
-        # TODO
+        deleteOSes("OpenPi/");
         # rename Raspbian
         # TODO
         # customize marketing
