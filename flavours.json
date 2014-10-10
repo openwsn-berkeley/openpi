@@ -1,0 +1,14 @@
+{
+  "flavours": [
+    {
+      "name": "Raspbian - Boot to Scratch",
+      "description": "A version of Raspbian that boots straight into Scratch",
+      "feature_level": 123900
+    },
+    {
+      "name": "OpenPi",
+      "description": "A raspberry pi image based on Raspbain, wihch included every dependencies for openwsn project",
+      "feature_level": 123900
+    }
+  ]
+}

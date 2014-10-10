@@ -1,0 +1,11 @@
+{
+  "name": "OpenPi",
+  "version": "1.0.0",
+  "release_date": "2014-10-12",
+  "kernel": "3.12",
+  "description": "A raspberry pi image based on Raspbain, wihch included every dependencies for openwsn project",
+  "url": "https://github.com/openwsn-berkeley/openpi",
+  "username": "pi",
+  "password": "openwsn",
+  "feature_level": 123900
+}

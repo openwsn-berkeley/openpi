@@ -3,6 +3,7 @@ Import('env')
 import zipfile
 import os.path
 import os
+import shutil
 
 localEnv = env.Clone()
 
@@ -28,12 +29,20 @@ build = localEnv.Command(
         Copy( Dir('#'), localEnv['OW_PATH_NOOBS_IN'] ),
         # unzip NOOBS
         unzip("NOOBS_v1_3_10.zip"),
-        # delete OSes
+        # delete OSes (there is only Raspbian there, no need to remove others)
         deleteOSes("OpenPi/");
-        # rename Raspbian
-        # TODO
         # customize marketing
-        # TODO
+        # replace default/slides/A.png by openwsn logo
+        # Done
+        # replace os/Raspbian/slides_vga/A.png, B.png......,G.png by colourful openwsn logo
+        # Done
+        # replace os/Raspbian.png by openpi.png
+        # Done
+        # named os/Raspbian/ by os/OpenPi/
+        # Done
+        # replace Raspbian by OpenPi in os/OpenPi/os.json and os/OpenPi/flavours.json files
+        # Done
+        
         # inflate root,
         # TODO
         # customize root,
