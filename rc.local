@@ -13,17 +13,17 @@
 
 # Print the IP address
 _IP=$(hostname -I) || true
-printf ""
-printf " ___                 _ _ _  ___  _ _ "
-printf "| . | ___  ___ ._ _ | | | |/ __>| \ |"
-printf "| | || . \/ ._>| ' || | | |\__ \|   |"
-printf "`___'|  _/\___.|_|_||__/_/ <___/|_\_|"
-printf "     |_|                  openwsn.org"
-printf ""
-printf "\n"
-
 if [ "$_IP" ]; then
   printf "My IP address is %s\n" "$_IP"
 fi
+
+# Print OpenWSN banner
+printf "\n"
+printf " ___                 _ _ _  ___  _ _ \n"
+printf "| . | ___  ___ ._ _ | | | |/ __>| \ |\n"
+printf "| | || . \/ ._>| ' || | | |\__ \|   |\n"
+printf "'___'|  _/\___.|_|_||__/_/ <___/|_\_|\n"
+printf "     |_|                  openwsn.org\n"
+printf "\n"
 
 exit 0

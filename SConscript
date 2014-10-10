@@ -47,23 +47,23 @@ build = localEnv.Command(
         
         # ***** functional customization *****
         # uncompress root.tar.xz root,
-        # Done. 
-        # execute "tar -xJf root.tar.xz root/" command in cygwin environment, 
-        # with an error:(tar: ./dev/console: Cannot utime: Invalid argument)
-        # download newest release of openwsn and unzip them to /root/home/pi
-        # TODO
-        # install dependencies python module
-        # TODO
+        # Done. (execute "tar -xJf root.tar.xz root/" command in Ubuntu environment)
+        # download newest release of openwsn-sw and unzip it to /root/home/pi
+        # Done.
+        # install dependencies python module (python-dev, scons, bottle, PyDispatcher)
+        # TODO.
         # customize the boot to print the openwsn banner
         # Done. (modified the rc.local file located at /root/etc/)
+        # start openvisulizer when boot
+        # TODO.
         # compress root
-        # Done. (using tar -cJf root.tar.xz root in cygwin environment)
+        # Done. (using tar -cJf ../root.tar.xz ./ in ubuntu environment)
         
         # ***** pack up *****
         # zip noobs,
-        # TODO
+        # Done.
         # copy to final location
-        # TODO
+        # TODO.
     ]
 )
 localEnv.Alias('build', build)
