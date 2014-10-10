@@ -25,12 +25,14 @@ build = localEnv.Command(
     'dummy.out',
     [],
     [
+        # ***** unzip and cleanup *****
         # copy NOOBS to current directory
         Copy( Dir('#'), localEnv['OW_PATH_NOOBS_IN'] ),
         # unzip NOOBS
         unzip("NOOBS_v1_3_10.zip"),
         # delete OSes
         deleteOSes("OpenPi/");
+        
         # ***** customize marketing *****
         # replace default/slides/A.png by openwsn logo
         # Done
@@ -43,12 +45,21 @@ build = localEnv.Command(
         # replace Raspbian by OpenPi in os/OpenPi/os.json and os/OpenPi/flavours.json files
         # Done
         
-        # inflate root,
+        # ***** functional customization *****
+        # uncompress root.tar.xz root,
+        # Done. 
+        # execute "tar -xJf root.tar.xz root/" command in cygwin environment, 
+        # with an error:(tar: ./dev/console: Cannot utime: Invalid argument)
+        # download newest release of openwsn and unzip them to /root/home/pi
         # TODO
-        # customize root,
+        # install dependencies python module
         # TODO
-        # compress root,
-        # TODO
+        # customize the boot to print the openwsn banner
+        # Done. (modified the rc.local file located at /root/etc/)
+        # compress root
+        # Done. (using tar -cJf root.tar.xz root in cygwin environment)
+        
+        # ***** pack up *****
         # zip noobs,
         # TODO
         # copy to final location
