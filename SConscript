@@ -29,9 +29,9 @@ build = localEnv.Command(
         Copy( Dir('#'), localEnv['OW_PATH_NOOBS_IN'] ),
         # unzip NOOBS
         unzip("NOOBS_v1_3_10.zip"),
-        # delete OSes (there is only Raspbian there, no need to remove others)
+        # delete OSes
         deleteOSes("OpenPi/");
-        # customize marketing
+        # ***** customize marketing *****
         # replace default/slides/A.png by openwsn logo
         # Done
         # replace os/Raspbian/slides_vga/A.png, B.png......,G.png by colourful openwsn logo

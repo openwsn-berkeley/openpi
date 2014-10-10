@@ -1,8 +1,8 @@
 {
   "flavours": [
     {
-      "name": "Raspbian - Boot to Scratch",
-      "description": "A version of Raspbian that boots straight into Scratch",
+      "name": "OpenPi - Boot to Scratch",
+      "description": "A version of OpenPi that boots straight into Scratch",
       "feature_level": 123900
     },
     {
