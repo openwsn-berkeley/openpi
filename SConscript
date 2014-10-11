@@ -50,8 +50,8 @@ build = localEnv.Command(
         # Done. (execute "tar -xJf root.tar.xz root/" command in Ubuntu environment)
         # download newest release of openwsn-sw and unzip it to /root/home/pi
         # Done.
-        # install dependencies python module (python-dev, scons, bottle, PyDispatcher)
-        # TODO.
+        # install dependencies python module (bottle, PyDispatcher)
+        # Done. (just extract the tar packages to /usr/local/lib/python.27/site-packages)
         # customize the boot to print the openwsn banner
         # Done. (modified the rc.local file located at /root/etc/)
         # start openvisulizer when boot
