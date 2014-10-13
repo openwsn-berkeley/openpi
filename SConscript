@@ -5,6 +5,7 @@ import tarfile
 import os.path
 import os
 import urllib
+import sys
 
 localEnv = env.Clone()
 
@@ -16,6 +17,25 @@ def wget(url):
     packageName = url.split('/')[-1]
     urllib.urlretrieve(url,packageName)
 
+def zipCompress(path, zip):
+    path = os.path.normpath(path)
+    # os.walk visits every subdirectory, returning a 3-tuple
+    # of directory name, subdirectories in it, and file names
+    # in it.
+    for (dirpath, dirnames, filenames) in os.walk(path):
+        # Iterate over every file name
+        for file in filenames:
+            print "Adding %s..." % os.path.join(path, dirpath, file)
+            try:
+                zip.write(os.path.join(dirpath, file),
+                os.path.join(dirpath[len(path):], file)) 
+                    
+            except Exception, e:
+                print "    Error adding %s: %s" % (file, e)
+
+    return None
+
+
 #============================ SCons actions ===================================
 
 def ActionUnzip(env,target,source):
@@ -23,11 +43,22 @@ def ActionUnzip(env,target,source):
     zfile.extractall("build/")
     zfile.close()
 
+def ActionZip(env,target,source):
+    zfile = zipfile.ZipFile("OpenPi.zip", 'w', zipfile.ZIP_DEFLATED)
+    zipCompress("build/", zfile)
+    zfile.close()
+
 def ActionExtractRootTarXz(env,target,source):
     os.system("7z.exe x build/os/OpenPi/root.tar.xz -y -obuild/os/OpenPi/ > ActionExtractRootTarXz.log")
 
 def ActionExtractRootTar(env,target,source):
     os.system("7z.exe x build/os/OpenPi/root.tar -y -obuild/os/OpenPi/root/ > ActionExtractRootTar.log")
+
+def ActioneCompressRootTar(env,target,source):
+    os.system("7z.exe a -ttar build/os/OpenPi/root.tar build/os/OpenPi/root/ > ActionCompressRootTar.log")
+
+def ActioneCompressRootTarXz(env,target,source):
+    os.system("7z.exe a -txz  build/os/OpenPi/root.tar.xz build/os/OpenPi/root.tar > ActionCompressRootTarXz.log")
 
 def ActionDownloadOpenWSN(env,target,source):
     urllib.urlretrieve('https://github.com/openwsn-berkeley/openwsn-sw/archive/REL-1.8.0.zip','openwsn-sw.zip')
@@ -116,13 +147,14 @@ build = localEnv.Command(
         Copy("build/os/OpenPi/root/etc","bits_n_pieces/rc.local"),
         
         # compress root
-        # Done. (using tar -cJf ../root.tar.xz ./ in ubuntu environment)
+        ActioneCompressRootTar,
+        ActioneCompressRootTarXz,
         
         #===== wrap-up and publish
-        # zip noobs,
-        # Done.
+        ActionZip,
         # copy to final location
-        # TODO.
+        Copy( localEnv['OW_PATH_NOOBS_IN'], "OpenPi.zip" ),
+        Delete("build"),
     ]
 )
 
