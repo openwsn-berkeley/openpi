@@ -7,7 +7,7 @@
     },
     {
       "name": "OpenPi",
-      "description": "A raspberry pi image based on Raspbain, wihch included every dependencies for openwsn project",
+      "description": "OpenWSN-ready Raspberry Pi distribution",
       "feature_level": 123900
     }
   ]

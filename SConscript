@@ -52,7 +52,7 @@ def ActionPythonPackagePyDispatcher(env,target,source):
 build = localEnv.Command(
     'dummy.out',[],
     [
-        #===== get
+        #===== get NOOBS
         Copy( Dir('#'), localEnv['OW_PATH_NOOBS_IN'] ),
         Delete("build"),
         Mkdir("build"),
@@ -66,26 +66,32 @@ build = localEnv.Command(
         Delete("build/os/RaspBMC"),
         Delete("build/os/RISC_OS"),
         
-        #===== some marketing
+        #===== marketing
+        # default logo
         Copy("build/defaults/slides/A.png","bits_n_pieces/openwsn_logo.png"),
-        Delete("build/os/Raspbian/slides_vga"),
-        Copy("build/os/Raspbian/slides_vga","bits_n_pieces/slides_vga"),
-        Delete("build/os/Raspbian/Raspbian.png"),
-        Copy("build/os/Raspbian/OpenPi.png","bits_n_pieces/OpenPi.png"),
+        
+        # rename distribution
         Move("build/os/OpenPi","build/os/Raspbian"),
+        
+        # installation options
         Copy("build/os/OpenPi/os.json","bits_n_pieces/os.json"),
         Copy("build/os/OpenPi/flavours.json","bits_n_pieces/flavours.json"),
         
+        # installation logo
+        Delete("build/os/OpenPi/Raspbian.png"),
+        Copy("build/os/OpenPi/OpenPi.png","bits_n_pieces/OpenPi.png"),
+        
+        # installation slides
+        Delete("build/os/OpenPi/slides_vga"),
+        Copy("build/os/OpenPi/slides_vga","bits_n_pieces/slides_vga"),
+        
         #===== customization
+        
+        # extract root
         ActionExtractRootTarXz,
         Delete("build/os/OpenPi/root.tar.xz"),
         ActionExtractRootTar,
         Delete("build/os/OpenPi/root.tar"),
-        ActionDownloadOpenWSN,
-        ActionUnzipOpenWSN,
-        Delete("openwsn-sw.zip"),
-        Move("build/os/OpenPi/root/home/pi/openwsn-sw","openwsn-sw-REL-1.8.0/"),
-        Copy("build/os/OpenPi/root/etc/","bits_n_pieces/modules"),
         
         # install python module dependencies (bottle, PyDispatcher)
         ActionPythonPackageBottle,
@@ -99,7 +105,14 @@ build = localEnv.Command(
         Delete("PyDispatcher-2.0.3.tar.gz"),
         Delete("PyDispatcher-2.0.3/"),
         
-        # customize boot message, start OpenVisualizer
+        # install OpenWSN-SW
+        ActionDownloadOpenWSN,
+        ActionUnzipOpenWSN,
+        Delete("openwsn-sw.zip"),
+        Move("build/os/OpenPi/root/home/pi/openwsn-sw","openwsn-sw-REL-1.8.0/"),
+        Copy("build/os/OpenPi/root/etc/","bits_n_pieces/modules"),
+        
+        # customize boot message, start OpenVisualizer on boot
         Copy("build/os/OpenPi/root/etc","bits_n_pieces/rc.local"),
         
         # compress root
