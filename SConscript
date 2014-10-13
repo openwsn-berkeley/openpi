@@ -17,18 +17,18 @@ def wget(url):
     packageName = url.split('/')[-1]
     urllib.urlretrieve(url,packageName)
 
-def zipCompress(path, zip):
-    path = os.path.normpath(path)
+def zipCompress(output, zip):
+    output = os.path.normpath(output)
     # os.walk visits every subdirectory, returning a 3-tuple
     # of directory name, subdirectories in it, and file names
     # in it.
-    for (dirpath, dirnames, filenames) in os.walk(path):
+    for (dirpath, dirnames, filenames) in os.walk(output):
         # Iterate over every file name
         for file in filenames:
-            print "Adding %s..." % os.path.join(path, dirpath, file)
+            print "Adding %s..." % os.path.join(output, dirpath, file)
             try:
                 zip.write(os.path.join(dirpath, file),
-                os.path.join(dirpath[len(path):], file)) 
+                os.path.join(dirpath[len(output):], file)) 
                     
             except Exception, e:
                 print "    Error adding %s: %s" % (file, e)
@@ -152,9 +152,9 @@ build = localEnv.Command(
         
         #===== wrap-up and publish
         ActionZip,
+        Delete("build"),
         # copy to final location
         Copy( localEnv['OW_PATH_NOOBS_IN'], "OpenPi.zip" ),
-        Delete("build"),
     ]
 )
 
