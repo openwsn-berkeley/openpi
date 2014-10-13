@@ -23,34 +23,50 @@ def ActionUnzip(env,target,source):
     zfile.extractall("build/")
     zfile.close()
 
-def actionInstallPythonPackages(env,target,source):
-    wget('https://pypi.python.org/packages/source/b/bottle/bottle-0.12.7.tar.gz')
-    wget('https://pypi.python.org/packages/source/P/PyDispatcher/PyDispatcher-2.0.3.tar.gz')
+def ActionExtractRootTarXz(env,target,source):
+    os.system("7z.exe x build/os/OpenPi/root.tar.xz -y -obuild/os/OpenPi/ > ActionExtractRootTarXz.log")
 
-def actionUntar(env,target,source):
-    tfile = tarfile.open('bottle-0.12.7.tar.gz','r:gz')
-    tfile.extractall(os.getcwd())
-    tfile.close()
+def ActionExtractRootTar(env,target,source):
+    os.system("7z.exe x build/os/OpenPi/root.tar -y -obuild/os/OpenPi/root/ > ActionExtractRootTar.log")
+
+def ActionDownloadOpenWSN(env,target,source):
+    urllib.urlretrieve('https://github.com/openwsn-berkeley/openwsn-sw/archive/REL-1.8.0.zip','openwsn-sw.zip')
+
+def ActionUnzipOpenWSN(env,target,source):
+    zfile = zipfile.ZipFile("openwsn-sw.zip")
+    zfile.extractall(".")
+    zfile.close()
+
+def ActionPythonPackageBottle(env,target,source):
+    wget('https://pypi.python.org/packages/source/b/bottle/bottle-0.12.7.tar.gz')
+    os.system("7z.exe x bottle-0.12.7.tar.gz -y > ActionDownloadPythonPackages.log")
+    os.system("7z.exe x dist/bottle-0.12.7.tar -y >> ActionDownloadPythonPackages.log")
+
+def ActionPythonPackagePyDispatcher(env,target,source):
+    wget('https://pypi.python.org/packages/source/P/PyDispatcher/PyDispatcher-2.0.3.tar.gz')
+    os.system("7z.exe x PyDispatcher-2.0.3.tar.gz -y >> ActionDownloadPythonPackages.log")
+    os.system("7z.exe x dist/PyDispatcher-2.0.3.tar -y >> ActionDownloadPythonPackages.log")
 
 #============================ SCons targets ===================================
 
 build = localEnv.Command(
-    'dummy.out',['NOOBS_v1_3_9.zip'],
+    'dummy.out',[],
     [
-        #===== get NOOBS
-        #Copy( Dir('#'), localEnv['OW_PATH_NOOBS_IN'] ),
-        
-        #===== unzip and clean up NOOBS
+        #===== get
+        Copy( Dir('#'), localEnv['OW_PATH_NOOBS_IN'] ),
         Delete("build"),
         Mkdir("build"),
         ActionUnzip,
+        Delete("NOOBS_v1_3_9.zip"),
+        
+        #===== clean up
         Delete("build/os/Arch"),
         Delete("build/os/OpenELEC"),
         Delete("build/os/Pidora"),
         Delete("build/os/RaspBMC"),
         Delete("build/os/RISC_OS"),
         
-        #===== marketing customization
+        #===== some marketing
         Copy("build/defaults/slides/A.png","bits_n_pieces/openwsn_logo.png"),
         Delete("build/os/Raspbian/slides_vga"),
         Copy("build/os/Raspbian/slides_vga","bits_n_pieces/slides_vga"),
@@ -60,21 +76,32 @@ build = localEnv.Command(
         Copy("build/os/OpenPi/os.json","bits_n_pieces/os.json"),
         Copy("build/os/OpenPi/flavours.json","bits_n_pieces/flavours.json"),
         
-        #===== functional customization
-        # uncompress root.tar.xz root,
-        # Done. (execute "tar -xJf root.tar.xz root/" command in Ubuntu environment)
-        # download newest release of openwsn-sw and unzip it to /root/home/pi
-        # Done.
-        # enable ipv6. (default the ipv6 is not enabled.)
-        # Done. (Add ipv6 at the end of /etc/modules)
-        # install dependencies python module (bottle, PyDispatcher)
-        #actionInstallPythonPackages,
-        #actionUntar,
-        # Done. (just extract the tar packages to /usr/local/lib/python.27/site-packages)
-        # customize the boot to print the openwsn banner
-        # Done. (modified the rc.local file located at /root/etc/)
-        # start openvisulizer when boot
-        # Done. (edit the rc.local file located at /root/etc: 1. cd to openVisualizerWeb.py directory 2. sudo python openVisualizerWeb.py)
+        #===== customization
+        ActionExtractRootTarXz,
+        Delete("build/os/OpenPi/root.tar.xz"),
+        ActionExtractRootTar,
+        Delete("build/os/OpenPi/root.tar"),
+        ActionDownloadOpenWSN,
+        ActionUnzipOpenWSN,
+        Delete("openwsn-sw.zip"),
+        Move("build/os/OpenPi/root/home/pi/openwsn-sw","openwsn-sw-REL-1.8.0/"),
+        Copy("build/os/OpenPi/root/etc/","bits_n_pieces/modules"),
+        
+        # install python module dependencies (bottle, PyDispatcher)
+        ActionPythonPackageBottle,
+        Move("build/os/OpenPi/root/usr/local/lib/python2.7/site-packages/","bottle-0.12.7/bottle.py"),
+        Delete("dist/"),
+        Delete("bottle-0.12.7.tar.gz"),
+        Delete("bottle-0.12.7/"),
+        ActionPythonPackagePyDispatcher,
+        Move("build/os/OpenPi/root/usr/local/lib/python2.7/site-packages/","PyDispatcher-2.0.3/pydispatch"),
+        Delete("dist/"),
+        Delete("PyDispatcher-2.0.3.tar.gz"),
+        Delete("PyDispatcher-2.0.3/"),
+        
+        # customize boot message, start OpenVisualizer
+        Copy("build/os/OpenPi/root/etc","bits_n_pieces/rc.local"),
+        
         # compress root
         # Done. (using tar -cJf ../root.tar.xz ./ in ubuntu environment)
         

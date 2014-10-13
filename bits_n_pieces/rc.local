@@ -11,12 +11,6 @@
 #
 # By default this script does nothing.
 
-# Print the IP address
-_IP=$(hostname -I) || true
-if [ "$_IP" ]; then
-  printf "My IP address is %s\n" "$_IP"
-fi
-
 # Print OpenWSN banner
 printf "\n"
 printf " ___                 _ _ _  ___  _ _ \n"
@@ -25,5 +19,14 @@ printf "| | || . \/ ._>| ' || | | |\__ \|   |\n"
 printf "'___'|  _/\___.|_|_||__/_/ <___/|_\_|\n"
 printf "     |_|                  openwsn.org\n"
 printf "\n"
+
+# Print the IP address
+_IP=$(hostname -I) || true
+if [ "$_IP" ]; then
+  printf "My IP address is %s\n" "$_IP"
+fi
+
+cd home/pi/openwsn-sw/software/openvisualizer/bin/openVisualizerApp/
+sudo python openVisualizerWeb.py
 
 exit 0

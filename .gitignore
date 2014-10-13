@@ -1,3 +1,4 @@
 *.dblite
-build
+/build
 /*.zip
+/*.log
