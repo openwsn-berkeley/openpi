@@ -43,30 +43,11 @@ def ActionUnzip(env,target,source):
     zfile.extractall("build/")
     zfile.close()
 
-def ActionZip(env,target,source):
-    zfile = zipfile.ZipFile("OpenPi.zip", 'w', zipfile.ZIP_DEFLATED)
-    zipCompress("build/", zfile)
-    zfile.close()
-
 def ActionExtractRootTarXz(env,target,source):
     os.system("7z.exe x build/os/OpenPi/root.tar.xz -y -obuild/os/OpenPi/ > ActionExtractRootTarXz.log")
 
 def ActionExtractRootTar(env,target,source):
     os.system("7z.exe x build/os/OpenPi/root.tar -y -obuild/os/OpenPi/root/ > ActionExtractRootTar.log")
-
-def ActioneCompressRootTar(env,target,source):
-    os.system("7z.exe a -ttar build/os/OpenPi/root.tar build/os/OpenPi/root/ > ActionCompressRootTar.log")
-
-def ActioneCompressRootTarXz(env,target,source):
-    os.system("7z.exe a -txz  build/os/OpenPi/root.tar.xz build/os/OpenPi/root.tar > ActionCompressRootTarXz.log")
-
-def ActionDownloadOpenWSN(env,target,source):
-    urllib.urlretrieve('https://github.com/openwsn-berkeley/openwsn-sw/archive/REL-1.8.0.zip','openwsn-sw.zip')
-
-def ActionUnzipOpenWSN(env,target,source):
-    zfile = zipfile.ZipFile("openwsn-sw.zip")
-    zfile.extractall(".")
-    zfile.close()
 
 def ActionPythonPackageBottle(env,target,source):
     wget('https://pypi.python.org/packages/source/b/bottle/bottle-0.12.7.tar.gz')
@@ -77,6 +58,25 @@ def ActionPythonPackagePyDispatcher(env,target,source):
     wget('https://pypi.python.org/packages/source/P/PyDispatcher/PyDispatcher-2.0.3.tar.gz')
     os.system("7z.exe x PyDispatcher-2.0.3.tar.gz -y >> ActionDownloadPythonPackages.log")
     os.system("7z.exe x dist/PyDispatcher-2.0.3.tar -y >> ActionDownloadPythonPackages.log")
+
+def ActionDownloadOpenWSN(env,target,source):
+    urllib.urlretrieve('https://github.com/openwsn-berkeley/openwsn-sw/archive/REL-1.8.0.zip','openwsn-sw.zip')
+
+def ActionUnzipOpenWSN(env,target,source):
+    zfile = zipfile.ZipFile("openwsn-sw.zip")
+    zfile.extractall(".")
+    zfile.close()
+
+def ActionCompressRootTar(env,target,source):
+    os.system("7z.exe a -ttar build/os/OpenPi/root.tar build/os/OpenPi/root/ > ActionCompressRootTar.log")
+
+def ActionCompressRootTarXz(env,target,source):
+    os.system("7z.exe a -txz  build/os/OpenPi/root.tar.xz build/os/OpenPi/root.tar > ActionCompressRootTarXz.log")
+
+def ActionZip(env,target,source):
+    zfile = zipfile.ZipFile("OpenPi.zip", 'w', zipfile.ZIP_DEFLATED)
+    zipCompress("build/", zfile)
+    zfile.close()
 
 #============================ SCons targets ===================================
 
@@ -147,8 +147,8 @@ build = localEnv.Command(
         Copy("build/os/OpenPi/root/etc","bits_n_pieces/rc.local"),
         
         # compress root
-        ActioneCompressRootTar,
-        ActioneCompressRootTarXz,
+        ActionCompressRootTar,
+        ActionCompressRootTarXz,
         
         #===== wrap-up and publish
         ActionZip,
