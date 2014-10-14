@@ -44,7 +44,7 @@ def ActionUnzip(env,target,source):
     zfile.close()
 
 def ActionExtractRootTarXz(env,target,source):
-    os.system("tar -xJf build/os/OpenPi/root.tar.xz build/os/OpenPi/ > ActionExtractRootTarXz.log")
+    os.system("sudo tar -xJf build/os/OpenPi/root.tar.xz build/os/OpenPi/ > ActionExtractRootTarXz.log")
 
 def ActionPythonPackageBottle(env,target,source):
     wget('https://pypi.python.org/packages/source/b/bottle/bottle-0.12.7.tar.gz')
@@ -65,7 +65,7 @@ def ActionUnzipOpenWSN(env,target,source):
     zfile.close()
 
 def ActionCompressRootTarXz(env,target,source):
-    os.system("tar -cJf build/os/OpenPi/root.tar.xz build/os/OpenPi/root/ > ActionCompressRootTar.log")
+    os.system("sudo tar -cJf build/os/OpenPi/root.tar.xz build/os/OpenPi/root/ > ActionCompressRootTar.log")
 
 def ActionZip(env,target,source):
     zfile = zipfile.ZipFile("OpenPi.zip", 'w', zipfile.ZIP_DEFLATED)
@@ -137,6 +137,10 @@ build = localEnv.Command(
         
         # customize boot message, start OpenVisualizer on boot
         Copy("build/os/OpenPi/root/etc","bits_n_pieces/rc.local"),
+        
+        # set up desktop backgroup
+        Delete("build/os/OpenPi/root/etc/alternatives/desktop-background");
+        Copy("build/os/OpenPi/root/etc/alternatives","bits_n_pieces/desktop-background"),
         
         # compress root
         ActionCompressRootTarXz,
