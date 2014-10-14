@@ -44,10 +44,7 @@ def ActionUnzip(env,target,source):
     zfile.close()
 
 def ActionExtractRootTarXz(env,target,source):
-    os.system("7z.exe x build/os/OpenPi/root.tar.xz -y -obuild/os/OpenPi/ > ActionExtractRootTarXz.log")
-
-def ActionExtractRootTar(env,target,source):
-    os.system("7z.exe x build/os/OpenPi/root.tar -y -obuild/os/OpenPi/root/ > ActionExtractRootTar.log")
+    os.system("tar -xJf build/os/OpenPi/root.tar.xz build/os/OpenPi/ > ActionExtractRootTarXz.log")
 
 def ActionPythonPackageBottle(env,target,source):
     wget('https://pypi.python.org/packages/source/b/bottle/bottle-0.12.7.tar.gz')
@@ -67,11 +64,8 @@ def ActionUnzipOpenWSN(env,target,source):
     zfile.extractall(".")
     zfile.close()
 
-def ActionCompressRootTar(env,target,source):
-    os.system("7z.exe a -ttar build/os/OpenPi/root.tar build/os/OpenPi/root/ > ActionCompressRootTar.log")
-
 def ActionCompressRootTarXz(env,target,source):
-    os.system("7z.exe a -txz  build/os/OpenPi/root.tar.xz build/os/OpenPi/root.tar > ActionCompressRootTarXz.log")
+    os.system("tar -cJf build/os/OpenPi/root.tar.xz build/os/OpenPi/root/ > ActionCompressRootTar.log")
 
 def ActionZip(env,target,source):
     zfile = zipfile.ZipFile("OpenPi.zip", 'w', zipfile.ZIP_DEFLATED)
@@ -121,8 +115,6 @@ build = localEnv.Command(
         # extract root
         ActionExtractRootTarXz,
         Delete("build/os/OpenPi/root.tar.xz"),
-        ActionExtractRootTar,
-        Delete("build/os/OpenPi/root.tar"),
         
         # install python module dependencies (bottle, PyDispatcher)
         ActionPythonPackageBottle,
@@ -147,14 +139,14 @@ build = localEnv.Command(
         Copy("build/os/OpenPi/root/etc","bits_n_pieces/rc.local"),
         
         # compress root
-        ActionCompressRootTar,
         ActionCompressRootTarXz,
+        Delete("build/os/OpenPi/root/"),
         
         #===== wrap-up and publish
         ActionZip,
         Delete("build"),
         # copy to final location
-        Copy( localEnv['OW_PATH_NOOBS_IN'], "OpenPi.zip" ),
+        Copy( localEnv['OW_PATH_NOOBS_OUT'], "OpenPi.zip" ),
     ]
 )
 
