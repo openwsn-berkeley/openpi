@@ -78,6 +78,7 @@ build = localEnv.Command(
     'dummy.out',[],
     [
         #===== get NOOBS
+        
         Copy( Dir('#'), localEnv['OW_PATH_NOOBS_IN'] ),
         Delete("build"),
         Mkdir("build"),
@@ -85,6 +86,7 @@ build = localEnv.Command(
         Delete("NOOBS_v1_3_9.zip"),
         
         #===== clean up
+        
         Delete("build/os/Arch"),
         Delete("build/os/OpenELEC"),
         Delete("build/os/Pidora"),
@@ -92,6 +94,7 @@ build = localEnv.Command(
         Delete("build/os/RISC_OS"),
         
         #===== marketing
+        
         # default logo
         Copy("build/defaults/slides/A.png","bits_n_pieces/openwsn_logo.png"),
         
@@ -106,9 +109,13 @@ build = localEnv.Command(
         Delete("build/os/OpenPi/Raspbian.png"),
         Copy("build/os/OpenPi/OpenPi.png","bits_n_pieces/OpenPi.png"),
         
-        # installation slides
+        # installation intro slides (shown during installation)
         Delete("build/os/OpenPi/slides_vga"),
         Copy("build/os/OpenPi/slides_vga","bits_n_pieces/slides_vga"),
+        
+        # desktop background image
+        Delete("build/os/OpenPi/root/etc/alternatives/desktop-background"),
+        Copy("build/os/OpenPi/root/etc/alternatives","bits_n_pieces/desktop-background"),
         
         #===== customization
         
@@ -138,15 +145,12 @@ build = localEnv.Command(
         # customize boot message, start OpenVisualizer on boot
         Copy("build/os/OpenPi/root/etc","bits_n_pieces/rc.local"),
         
-        # set up desktop backgroup
-        Delete("build/os/OpenPi/root/etc/alternatives/desktop-background");
-        Copy("build/os/OpenPi/root/etc/alternatives","bits_n_pieces/desktop-background"),
-        
         # compress root
         ActionCompressRootTarXz,
         Delete("build/os/OpenPi/root/"),
         
         #===== wrap-up and publish
+        
         ActionZip,
         Delete("build"),
         # copy to final location
