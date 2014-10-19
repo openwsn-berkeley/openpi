@@ -13,10 +13,6 @@ localEnv = env.Clone()
 
 #============================ helpers =========================================
 
-def wget(url):
-    packageName = url.split('/')[-1]
-    urllib.urlretrieve(url,packageName)
-
 def zipCompress(output, zip):
     output = os.path.normpath(output)
     # os.walk visits every subdirectory, returning a 3-tuple
@@ -44,17 +40,16 @@ def ActionUnzip(env,target,source):
     zfile.close()
 
 def ActionExtractRootTarXz(env,target,source):
-    os.system("sudo tar -xJf build/os/OpenPi/root.tar.xz build/os/OpenPi/ > ActionExtractRootTarXz.log")
+    os.system("pwd")
+    os.system("sudo tar -xJf build/os/OpenPi/root.tar.xz build/os/OpenPi/")
 
 def ActionPythonPackageBottle(env,target,source):
-    wget('https://pypi.python.org/packages/source/b/bottle/bottle-0.12.7.tar.gz')
-    os.system("7z.exe x bottle-0.12.7.tar.gz -y > ActionDownloadPythonPackages.log")
-    os.system("7z.exe x dist/bottle-0.12.7.tar -y >> ActionDownloadPythonPackages.log")
+    os.system("wget https://pypi.python.org/packages/source/b/bottle/bottle-0.12.7.tar.gz")
+    os.system("tar -zxvf bottle-0.12.7.tar.gz")
 
 def ActionPythonPackagePyDispatcher(env,target,source):
-    wget('https://pypi.python.org/packages/source/P/PyDispatcher/PyDispatcher-2.0.3.tar.gz')
-    os.system("7z.exe x PyDispatcher-2.0.3.tar.gz -y >> ActionDownloadPythonPackages.log")
-    os.system("7z.exe x dist/PyDispatcher-2.0.3.tar -y >> ActionDownloadPythonPackages.log")
+    os.system("wget https://pypi.python.org/packages/source/P/PyDispatcher/PyDispatcher-2.0.3.tar.gz")
+    os.system("tar -zxvf PyDispatcher-2.0.3.tar.gz")
 
 def ActionDownloadOpenWSN(env,target,source):
     urllib.urlretrieve('https://github.com/openwsn-berkeley/openwsn-sw/archive/REL-1.8.0.zip','openwsn-sw.zip')
@@ -79,7 +74,7 @@ build = localEnv.Command(
     [
         #===== get NOOBS
         
-        Copy( Dir('#'), localEnv['OW_PATH_NOOBS_IN'] ),
+        #Copy( Dir('#'), localEnv['OW_PATH_NOOBS_IN'] ),
         Delete("build"),
         Mkdir("build"),
         ActionUnzip,
@@ -154,7 +149,7 @@ build = localEnv.Command(
         ActionZip,
         Delete("build"),
         # copy to final location
-        Copy( localEnv['OW_PATH_OPENPI_OUT'], "OpenPi.zip" ),
+        #Copy( localEnv['OW_PATH_OPENPI_OUT'], "OpenPi.zip" ),
     ]
 )
 
