@@ -74,7 +74,7 @@ build = localEnv.Command(
     [
         #===== get NOOBS
         
-        #Copy( Dir('#'), localEnv['OW_PATH_NOOBS_IN'] ),
+        Copy( Dir('#'), localEnv['OW_PATH_NOOBS_IN'] ),
         Delete("build"),
         Mkdir("build"),
         ActionUnzip,
@@ -149,7 +149,7 @@ build = localEnv.Command(
         ActionZip,
         Delete("build"),
         # copy to final location
-        #Copy( localEnv['OW_PATH_OPENPI_OUT'], "OpenPi.zip" ),
+        Copy( localEnv['OW_PATH_OPENPI_OUT'], "OpenPi.zip" ),
     ]
 )
 
