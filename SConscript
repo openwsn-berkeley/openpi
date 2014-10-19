@@ -113,15 +113,15 @@ build = localEnv.Command(
         Delete("build/os/OpenPi/slides_vga"),
         Copy("build/os/OpenPi/slides_vga","bits_n_pieces/slides_vga"),
         
-        # desktop background image
-        Delete("build/os/OpenPi/root/etc/alternatives/desktop-background"),
-        Copy("build/os/OpenPi/root/etc/alternatives","bits_n_pieces/desktop-background"),
-        
         #===== customization
         
         # extract root
         ActionExtractRootTarXz,
         Delete("build/os/OpenPi/root.tar.xz"),
+        
+        # change desktop background image (do here, after root/ un-tared)
+        Delete("build/os/OpenPi/root/etc/alternatives/desktop-background"),
+        Copy("build/os/OpenPi/root/etc/alternatives","bits_n_pieces/desktop-background"),
         
         # install python module dependencies (bottle, PyDispatcher)
         ActionPythonPackageBottle,
