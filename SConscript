@@ -13,30 +13,45 @@ localEnv = env.Clone()
 def ActionUnzip(env,target,source):
     os.system("unzip NOOBS_v1_3_9.zip -d build/")
 
-def ActionExtractRootTarXz(env,target,source):
+def ActionCustomizeOpenPi(env,target,source):
+    
+    # extract root
     os.system("sudo mkdir build/os/OpenPi/root/")
     os.system("sudo tar -xJf build/os/OpenPi/root.tar.xz -C build/os/OpenPi/root/")
-
-def ActionDesktopBackground(env,target,source):
+    os.system("sudo rm -Rf build/os/OpenPi/root.tar.xz")
+    
+    # change desktop background image
     os.system("sudo rm build/os/OpenPi/root/etc/alternatives/desktop-background")
     os.system("sudo cp bits_n_pieces/desktop-background build/os/OpenPi/root/etc/alternatives/desktop-background")
-
-def ActionPythonPackageBottle(env,target,source):
+    
+    # install python module dependencies (bottle, PyDispatcher)
     os.system("wget https://pypi.python.org/packages/source/b/bottle/bottle-0.12.7.tar.gz")
     os.system("tar -zxvf bottle-0.12.7.tar.gz")
-
-def ActionPythonPackagePyDispatcher(env,target,source):
+    os.system("sudo mv bottle-0.12.7/bottle.py build/os/OpenPi/root/usr/local/lib/python2.7/site-packages/")
+    os.system("sudo rm bottle-0.12.7.tar.gz")
+    os.system("sudo rm -Rf bottle-0.12.7/")
     os.system("wget https://pypi.python.org/packages/source/P/PyDispatcher/PyDispatcher-2.0.3.tar.gz")
     os.system("tar -zxvf PyDispatcher-2.0.3.tar.gz")
-
-def ActionDownloadOpenWSN(env,target,source):
+    os.system("sudo mv PyDispatcher-2.0.3/pydispatch build/os/OpenPi/root/usr/local/lib/python2.7/site-packages/")
+    os.system("sudo rm PyDispatcher-2.0.3.tar.gz")
+    os.system("sudo rm -Rf PyDispatcher-2.0.3/")
+        
+    # install OpenWSN-SW
     os.system("wget https://github.com/openwsn-berkeley/openwsn-sw/archive/REL-1.8.0.zip")
-
-def ActionUnzipOpenWSN(env,target,source):
     os.system("unzip REL-1.8.0.zip")
-
-def ActionCompressRootTarXz(env,target,source):
+    os.system("sudo rm REL-1.8.0.zip")
+    os.system("sudo mv openwsn-sw-REL-1.8.0 openwsn-sw")
+    os.system("sudo mv openwsn-sw build/os/OpenPi/root/home/pi/")
+    
+    # update modules to run
+    os.system("sudo cp bits_n_pieces/modules build/os/OpenPi/root/etc/")
+    
+    # customize boot message, start OpenVisualizer on boot
+    os.system("sudo cp bits_n_pieces/rc.local build/os/OpenPi/root/etc")
+    
+    # compress root
     os.system("sudo tar -cJf build/os/OpenPi/root.tar.xz build/os/OpenPi/root/")
+    os.system("sudo rm -Rf build/os/OpenPi/root/")
 
 def ActionZip(env,target,source):
     os.system("zip -r OpenPi.zip build/*")
@@ -84,37 +99,7 @@ build = localEnv.Command(
         
         #===== OpenPi customization
         
-        # extract root
-        ActionExtractRootTarXz,
-        Delete("build/os/OpenPi/root.tar.xz"),
-        
-        # change desktop background image (do here, after root/ un-tared)
-        ActionDesktopBackground,
-        
-        # install python module dependencies (bottle, PyDispatcher)
-        ActionPythonPackageBottle,
-        Move("build/os/OpenPi/root/usr/local/lib/python2.7/site-packages/","bottle-0.12.7/bottle.py"),
-        Delete("bottle-0.12.7.tar.gz"),
-        Delete("bottle-0.12.7/"),
-        ActionPythonPackagePyDispatcher,
-        Move("build/os/OpenPi/root/usr/local/lib/python2.7/site-packages/","PyDispatcher-2.0.3/pydispatch"),
-        Delete("PyDispatcher-2.0.3.tar.gz"),
-        Delete("PyDispatcher-2.0.3/"),
-        
-        # install OpenWSN-SW
-        ActionDownloadOpenWSN,
-        ActionUnzipOpenWSN,
-        Delete("REL-1.8.0.zip"),
-        Move("openwsn-sw","openwsn-sw-REL-1.8.0"),
-        Move("build/os/OpenPi/root/home/pi/","openwsn-sw"),
-        Copy("build/os/OpenPi/root/etc/","bits_n_pieces/modules"),
-        
-        # customize boot message, start OpenVisualizer on boot
-        Copy("build/os/OpenPi/root/etc","bits_n_pieces/rc.local"),
-        
-        # compress root
-        ActionCompressRootTarXz,
-        Delete("build/os/OpenPi/root/"),
+        ActionCustomizeOpenPi,
         
         #===== OpenPi wrap-up and publish
         
