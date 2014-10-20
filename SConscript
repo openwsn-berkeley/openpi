@@ -8,16 +8,51 @@ localEnv = env.Clone()
 
 #============================ helpers =========================================
 
-def syscall(cmd,dry_run=False):
+def syscall(cmd):
     print cmd
     os.system(cmd)
 
 #============================ SCons actions ===================================
 
-def ActionUnzip(env,target,source):
+def ActionBuild(env,target,source):
+    
+    #===== NOOBS get
+    
+    syscall("rm -Rf build/")
+    syscall("cp {0} .".format(localEnv['OW_PATH_NOOBS_IN']))
+    syscall("mkdir build")
     syscall("unzip NOOBS_v1_3_9.zip -d build/")
-
-def ActionCustomizeOpenPi(env,target,source):
+    syscall("rm -Rf NOOBS_v1_3_9.zip")
+    
+    #===== NOOBS clean-up
+    
+    syscall("rm -Rf build/os/Arch")
+    syscall("rm -Rf build/os/OpenELEC")
+    syscall("rm -Rf build/os/Pidora")
+    syscall("rm -Rf build/os/RaspBMC")
+    syscall("rm -Rf build/os/RISC_OS")
+    
+    #===== NOOBS marketing
+    
+    # default logo
+    syscall("cp bits_n_pieces/openwsn_logo.png build/defaults/slides/A.png")
+    
+    # rename distribution
+    syscall("mv build/os/Raspbian build/os/OpenPi")
+    
+    # installation options
+    syscall("cp bits_n_pieces/os.json       build/os/OpenPi/os.json"),
+    syscall("cp bits_n_pieces/flavours.json build/os/OpenPi/flavours.json")
+    
+    # installation logo
+    syscall("rm build/os/OpenPi/Raspbian.png")
+    syscall("cp bits_n_pieces/OpenPi.png    bits_n_pieces/OpenPi.png")
+    
+    # installation intro slides (shown during installation)
+    syscall("rm -Rf build/os/OpenPi/slides_vga")
+    syscall("cp bits_n_pieces/slides_vga    build/os/OpenPi/slides_vga")
+    
+    #===== OpenPi customization
     
     # extract root
     syscall("sudo mkdir build/os/OpenPi/root/")
@@ -56,65 +91,24 @@ def ActionCustomizeOpenPi(env,target,source):
     # compress root
     syscall("sudo tar -cJf build/os/OpenPi/root.tar.xz build/os/OpenPi/root/")
     syscall("sudo rm -Rf build/os/OpenPi/root/")
-
-def ActionZip(env,target,source):
+    
+    #===== OpenPi wrap-up and publish
+    
+    # create final zip
     syscall("cd build")
     syscall("zip -r ../OpenPi.zip *")
     syscall("cd ..")
+    syscall("rm -Rf build")
+    
+    # copy to final location
+    syscall("cp OpenPi.zip {0}".format(localEnv['OW_PATH_OPENPI_OUT']))
 
 #============================ SCons targets ===================================
 
 build = localEnv.Command(
     'dummy.out',[],
     [
-        #===== NOOBS get
-        
-        Delete("build"),
-        Copy( Dir('#'), localEnv['OW_PATH_NOOBS_IN'] ),
-        Mkdir("build"),
-        ActionUnzip,
-        Delete("NOOBS_v1_3_9.zip"),
-        
-        #===== NOOBS clean up
-        
-        Delete("build/os/Arch"),
-        Delete("build/os/OpenELEC"),
-        Delete("build/os/Pidora"),
-        Delete("build/os/RaspBMC"),
-        Delete("build/os/RISC_OS"),
-        
-        #===== NOOBS marketing
-        
-        # default logo
-        Copy("build/defaults/slides/A.png","bits_n_pieces/openwsn_logo.png"),
-        
-        # rename distribution
-        Move("build/os/OpenPi","build/os/Raspbian"),
-        
-        # installation options
-        Copy("build/os/OpenPi/os.json","bits_n_pieces/os.json"),
-        Copy("build/os/OpenPi/flavours.json","bits_n_pieces/flavours.json"),
-        
-        # installation logo
-        Delete("build/os/OpenPi/Raspbian.png"),
-        Copy("build/os/OpenPi/OpenPi.png","bits_n_pieces/OpenPi.png"),
-        
-        # installation intro slides (shown during installation)
-        Delete("build/os/OpenPi/slides_vga"),
-        Copy("build/os/OpenPi/slides_vga","bits_n_pieces/slides_vga"),
-        
-        #===== OpenPi customization
-        
-        ActionCustomizeOpenPi,
-        
-        #===== OpenPi wrap-up and publish
-        
-        # create final zip
-        ActionZip,
-        Delete("build"),
-        
-        # copy to final location
-        Copy( localEnv['OW_PATH_OPENPI_OUT'], "OpenPi.zip" ),
+        ActionBuild,
     ]
 )
 
