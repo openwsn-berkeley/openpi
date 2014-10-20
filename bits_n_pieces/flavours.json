@@ -1,11 +1,6 @@
 {
   "flavours": [
     {
-      "name": "OpenPi - Boot to Scratch",
-      "description": "A version of OpenPi that boots straight into Scratch",
-      "feature_level": 123900
-    },
-    {
       "name": "OpenPi",
       "description": "OpenWSN-ready Raspberry Pi distribution",
       "feature_level": 123900

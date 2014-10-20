@@ -6,6 +6,6 @@
   "description": "OpenWSN-ready Raspberry Pi distribution",
   "url": "http://www.openwsn.org/",
   "username": "pi",
-  "password": "openwsn",
+  "password": "raspberry",
   "feature_level": 123900
 }
