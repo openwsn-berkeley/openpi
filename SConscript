@@ -86,6 +86,7 @@ build = localEnv.Command(
         Delete("build/os/OpenPi/root.tar.xz"),
         
         # change desktop background image (do here, after root/ un-tared)
+        Delete("build/os/OpenPi/root/etc/alternatives/desktop-background")
         Copy("build/os/OpenPi/root/etc/alternatives/desktop-background","bits_n_pieces/desktop-background"),
         
         # install python module dependencies (bottle, PyDispatcher)
