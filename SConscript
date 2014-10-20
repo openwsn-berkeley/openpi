@@ -14,9 +14,12 @@ def ActionUnzip(env,target,source):
     os.system("unzip NOOBS_v1_3_9.zip -d build/")
 
 def ActionExtractRootTarXz(env,target,source):
-    os.system("pwd")
     os.system("sudo mkdir build/os/OpenPi/root/")
     os.system("sudo tar -xJf build/os/OpenPi/root.tar.xz -C build/os/OpenPi/root/")
+
+def ActionDesktopBackground(env,target,source):
+    os.system("sudo rm build/os/OpenPi/root/etc/alternatives/desktop-background")
+    os.system("sudo cp bits_n_pieces/desktop-background build/os/OpenPi/root/etc/alternatives/desktop-background")
 
 def ActionPythonPackageBottle(env,target,source):
     os.system("wget https://pypi.python.org/packages/source/b/bottle/bottle-0.12.7.tar.gz")
@@ -86,8 +89,7 @@ build = localEnv.Command(
         Delete("build/os/OpenPi/root.tar.xz"),
         
         # change desktop background image (do here, after root/ un-tared)
-        Delete("build/os/OpenPi/root/etc/alternatives/desktop-background"),
-        Copy("build/os/OpenPi/root/etc/alternatives/desktop-background","bits_n_pieces/desktop-background"),
+        ActionDesktopBackground,
         
         # install python module dependencies (bottle, PyDispatcher)
         ActionPythonPackageBottle,
