@@ -45,8 +45,8 @@ build = localEnv.Command(
     [
         #===== NOOBS get
         
-        Copy( Dir('#'), localEnv['OW_PATH_NOOBS_IN'] ),
         Delete("build"),
+        Copy( Dir('#'), localEnv['OW_PATH_NOOBS_IN'] ),
         Mkdir("build"),
         ActionUnzip,
         Delete("NOOBS_v1_3_9.zip"),
