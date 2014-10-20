@@ -9,7 +9,7 @@ localEnv = env.Clone()
 #============================ helpers =========================================
 
 def syscall(cmd):
-    print cmd
+    print '>>> {0}'.format(cmd)
     os.system(cmd)
 
 #============================ SCons actions ===================================
@@ -46,11 +46,11 @@ def ActionBuild(env,target,source):
     
     # installation logo
     syscall("rm build/os/OpenPi/Raspbian.png")
-    syscall("cp bits_n_pieces/OpenPi.png    bits_n_pieces/OpenPi.png")
+    syscall("cp bits_n_pieces/OpenPi.png    build/os/OpenPi/OpenPi.png")
     
     # installation intro slides (shown during installation)
     syscall("rm -Rf build/os/OpenPi/slides_vga")
-    syscall("cp bits_n_pieces/slides_vga    build/os/OpenPi/slides_vga")
+    syscall("cp -r bits_n_pieces/slides_vga build/os/OpenPi/slides_vga")
     
     #===== OpenPi customization
     
@@ -95,9 +95,7 @@ def ActionBuild(env,target,source):
     #===== OpenPi wrap-up and publish
     
     # create final zip
-    syscall("cd build")
-    syscall("zip -r ../OpenPi.zip *")
-    syscall("cd ..")
+    syscall("cd build ; zip -r ../OpenPi.zip * ; cd ..")
     syscall("rm -Rf build")
     
     # copy to final location
