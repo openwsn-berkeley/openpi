@@ -27,7 +27,7 @@ if [ "$_IP" ]; then
 fi
 
 # start OpenVisualizer
-cd /home/pi/openwsn-sw-REL-1.8.0/software/openvisualizer/bin/openVisualizerApp
+cd /home/pi/openwsn-sw/software/openvisualizer/bin/openVisualizerApp
 sudo python openVisualizerWeb.py
 
 exit 0
