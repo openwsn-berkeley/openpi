@@ -89,7 +89,7 @@ def ActionBuild(env,target,source):
     syscall("sudo cp bits_n_pieces/rc.local build/os/OpenPi/root/etc")
     
     # compress root
-    syscall("sudo tar -cJf build/os/OpenPi/root.tar.xz build/os/OpenPi/root/")
+    syscall("cd build/os/OpenPi/root/ ; sudo tar -cJf ../root.tar.xz ./ ; cd ../../../../")
     syscall("sudo rm -Rf build/os/OpenPi/root/")
     
     #===== OpenPi wrap-up and publish
