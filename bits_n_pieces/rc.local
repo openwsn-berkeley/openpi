@@ -28,6 +28,6 @@ fi
 
 # start OpenVisualizer
 cd /home/pi/openwsn-sw/software/openvisualizer/bin/openVisualizerApp
-sudo python openVisualizerWeb.py
+sudo python openVisualizerWeb.py &
 
 exit 0
