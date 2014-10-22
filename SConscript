@@ -66,11 +66,11 @@ def ActionBuild(env,target,source):
     # install python module dependencies (bottle, PyDispatcher)
     syscall("wget https://pypi.python.org/packages/source/b/bottle/bottle-0.12.7.tar.gz")
     syscall("tar -zxvf bottle-0.12.7.tar.gz")
-    syscall("sudo mv bottle-0.12.7/ build/os/OpenPi/root/usr/local/lib/python2.7/site-packages/")
+    syscall("sudo mv bottle-0.12.7/ usr/local/lib/python2.7/site-packages/")
     syscall("sudo rm bottle-0.12.7.tar.gz")
     syscall("wget https://pypi.python.org/packages/source/P/PyDispatcher/PyDispatcher-2.0.3.tar.gz")
     syscall("tar -zxvf PyDispatcher-2.0.3.tar.gz")
-    syscall("sudo mv PyDispatcher-2.0.3/ build/os/OpenPi/root/usr/local/lib/python2.7/site-packages/")
+    syscall("sudo mv PyDispatcher-2.0.3/ usr/local/lib/python2.7/site-packages/")
     syscall("sudo rm PyDispatcher-2.0.3.tar.gz")
         
     # install OpenWSN-SW
