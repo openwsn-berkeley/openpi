@@ -66,32 +66,32 @@ def ActionBuild(env,target,source):
     # install python module dependencies (bottle, PyDispatcher)
     syscall("wget https://pypi.python.org/packages/source/b/bottle/bottle-0.12.7.tar.gz")
     syscall("tar -zxvf bottle-0.12.7.tar.gz")
-    syscall("sudo cp bottle-0.12.7/bottle.py build/os/OpenPi/root/usr/local/lib/python2.7/dist-packages/")
-    syscall("sudo mv bottle-0.12.7/bottle.py build/os/OpenPi/root/usr/local/bin/")
-    syscall("sudo rm bottle-0.12.7.tar.gz")
-    syscall("sudo rm -Rf bottle-0.12.7/")
+    syscall("cp bottle-0.12.7/bottle.py build/os/OpenPi/root/usr/local/lib/python2.7/dist-packages/")
+    syscall("mv bottle-0.12.7/bottle.py build/os/OpenPi/root/usr/local/bin/")
+    syscall("rm bottle-0.12.7.tar.gz")
+    syscall("rm -Rf bottle-0.12.7/")
     syscall("wget https://pypi.python.org/packages/source/P/PyDispatcher/PyDispatcher-2.0.3.tar.gz")
     syscall("tar -zxvf PyDispatcher-2.0.3.tar.gz")
-    syscall("sudo mv PyDispatcher-2.0.3/pydispatch build/os/OpenPi/root/usr/local/lib/python2.7/dist-packages/")
-    syscall("sudo rm PyDispatcher-2.0.3.tar.gz")
-    syscall("sudo rm -Rf PyDispatcher-2.0.3/")
+    syscall("mv PyDispatcher-2.0.3/pydispatch build/os/OpenPi/root/usr/local/lib/python2.7/dist-packages/")
+    syscall("rm PyDispatcher-2.0.3.tar.gz")
+    syscall("rm -Rf PyDispatcher-2.0.3/")
         
     # install OpenWSN-SW
     syscall("wget https://github.com/openwsn-berkeley/openwsn-sw/archive/REL-1.8.0.zip")
     syscall("unzip REL-1.8.0.zip")
-    syscall("sudo rm REL-1.8.0.zip")
-    syscall("sudo mv openwsn-sw-REL-1.8.0 openwsn-sw")
-    syscall("sudo mv openwsn-sw build/os/OpenPi/root/home/pi/")
+    syscall("rm REL-1.8.0.zip")
+    syscall("mv openwsn-sw-REL-1.8.0 openwsn-sw")
+    syscall("mv openwsn-sw build/os/OpenPi/root/home/pi/")
     
     # update modules to run
-    syscall("sudo cp bits_n_pieces/modules build/os/OpenPi/root/etc/")
+    syscall("cp bits_n_pieces/modules build/os/OpenPi/root/etc/")
     
     # customize boot message, start OpenVisualizer on boot
-    syscall("sudo cp bits_n_pieces/rc.local build/os/OpenPi/root/etc")
+    syscall("cp bits_n_pieces/rc.local build/os/OpenPi/root/etc")
     
     # compress root
     syscall("cd build/os/OpenPi/root/ ; sudo tar -cJf ../root.tar.xz ./ ; cd ../../../../")
-    syscall("sudo rm -Rf build/os/OpenPi/root/")
+    syscall("rm -Rf build/os/OpenPi/root/")
     
     #===== OpenPi wrap-up and publish
     
