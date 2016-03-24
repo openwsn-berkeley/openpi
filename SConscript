@@ -21,8 +21,8 @@ def ActionBuild(env,target,source):
     syscall("rm -Rf build/")
     syscall("cp {0} .".format(localEnv['OW_PATH_NOOBS_IN']))
     syscall("mkdir build")
-    syscall("unzip NOOBS_v1_3_9.zip -d build/")
-    syscall("rm -Rf NOOBS_v1_3_9.zip")
+    syscall("unzip NOOBS_v1_9_0.zip -d build/")
+    syscall("rm -Rf NOOBS_v1_9_0.zip")
     
     #===== NOOBS clean-up
     
