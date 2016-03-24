@@ -55,13 +55,13 @@ def ActionBuild(env,target,source):
     #===== OpenPi customization
     
     # extract root
-    syscall("sudo mkdir build/os/OpenPi/root/")
-    syscall("sudo tar -xJf build/os/OpenPi/root.tar.xz -C build/os/OpenPi/root/")
-    syscall("sudo rm -Rf build/os/OpenPi/root.tar.xz")
+    syscall("mkdir build/os/OpenPi/root/")
+    syscall("tar -xJf build/os/OpenPi/root.tar.xz -C build/os/OpenPi/root/")
+    syscall("rm -Rf build/os/OpenPi/root.tar.xz")
     
     # change desktop background image
-    syscall("sudo rm build/os/OpenPi/root/etc/alternatives/desktop-background")
-    syscall("sudo cp bits_n_pieces/desktop-background build/os/OpenPi/root/etc/alternatives/desktop-background")
+    syscall("rm build/os/OpenPi/root/etc/alternatives/desktop-background")
+    syscall("cp bits_n_pieces/desktop-background build/os/OpenPi/root/etc/alternatives/desktop-background")
     
     # install python module dependencies (bottle, PyDispatcher)
     syscall("wget https://pypi.python.org/packages/source/b/bottle/bottle-0.12.7.tar.gz")
