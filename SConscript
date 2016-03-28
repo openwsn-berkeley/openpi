@@ -78,8 +78,8 @@ def ActionBuild(env,target,source):
         
     # install OpenWSN-SW
     syscall("wget https://codeload.github.com/openwsn-berkeley/openwsn-sw/zip/develop")
-    syscall("unzip openwsn-sw-develop.zip")
-    syscall("sudo rm openwsn-sw-develop.zip")
+    syscall("unzip develop")
+    syscall("sudo rm develop")
     syscall("sudo mv openwsn-sw-develop openwsn-sw")
     syscall("sudo mv openwsn-sw build/os/OpenPi/root/home/pi/")
     
