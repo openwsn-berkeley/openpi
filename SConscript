@@ -87,7 +87,7 @@ def ActionBuild(env,target,source):
     syscall("sudo cp bits_n_pieces/modules build/os/OpenPi/root/etc/")
     
     # customize boot message, start OpenVisualizer on boot
-    syscall("sudo cp bits_n_pieces/rc.local build/os/OpenPi/root/etc")
+    # syscall("sudo cp bits_n_pieces/rc.local build/os/OpenPi/root/etc")
     
     # compress root
     syscall("cd build/os/OpenPi/root/ ; sudo tar -cJf ../root.tar.xz ./ ; cd ../../../../")
