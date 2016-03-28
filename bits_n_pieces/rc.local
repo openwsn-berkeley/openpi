@@ -26,8 +26,4 @@ if [ "$_IP" ]; then
   printf "My IP address is %s\n" "$_IP"
 fi
 
-# start OpenVisualizer
-cd /home/pi/openwsn-sw/software/openvisualizer/bin/openVisualizerApp
-sudo python openVisualizerWeb.py &
-
 exit 0
