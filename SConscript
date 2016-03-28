@@ -77,10 +77,10 @@ def ActionBuild(env,target,source):
     syscall("sudo rm -Rf PyDispatcher-2.0.3/")
         
     # install OpenWSN-SW
-    syscall("wget https://github.com/openwsn-berkeley/openwsn-sw/archive/REL-1.8.0.zip")
-    syscall("unzip REL-1.8.0.zip")
-    syscall("sudo rm REL-1.8.0.zip")
-    syscall("sudo mv openwsn-sw-REL-1.8.0 openwsn-sw")
+    syscall("wget https://codeload.github.com/openwsn-berkeley/openwsn-sw/zip/develop")
+    syscall("unzip openwsn-sw-develop.zip")
+    syscall("sudo rm openwsn-sw-develop.zip")
+    syscall("sudo mv openwsn-sw-develop openwsn-sw")
     syscall("sudo mv openwsn-sw build/os/OpenPi/root/home/pi/")
     
     # update modules to run
