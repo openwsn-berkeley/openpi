@@ -100,7 +100,7 @@ def ActionBuild(env,target,source):
     syscall("rm -Rf build")
     
     # copy to final location
-    syscall("mv OpenPi.zip {0}".format(localEnv['OW_PATH_OPENPI_OUT']))
+    syscall("sudo cp OpenPi.zip {0}".format(localEnv['OW_PATH_OPENPI_OUT']))
 
 #============================ SCons targets ===================================
 
